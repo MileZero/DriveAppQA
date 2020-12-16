@@ -19,5 +19,4 @@ def removeReturnPackageIds(routeId):
         i = i+1
         for package in stop["stopPackages"]:
             print(package["packageId"])
-    
-removeReturnPackageIds("4a36c49c-694d-4001-beb7-4455b13d39fb")
+   
