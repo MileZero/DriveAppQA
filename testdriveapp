@@ -1,0 +1,23 @@
+import json, requests, sys
+
+
+
+orgId = "3e59b207-cea5-4b00-8035-eed1ae26e566"
+routeId = "4a36c49c-694d-4001-beb7-4455b13d39fb"
+
+def removeReturnPackageIds(routeId):
+    routeRequest = requests.get("http://alamo.stage.milezero.com/alamo-war/api/plannedroutes/stopdetails/{}".format(routeId))
+    res = routeRequest.json()
+    routeStopDetail = res["routeStopDetail"]
+
+    if (routeStopDetail["routeState"] == "FAILURE_DURING_SUBMISSION"):
+       print("routeId to be re-executed : {}".format(routeId))
+    stops = routeStopDetail["stops"]
+    i = 0
+    for stop in stops[:-1]:
+        print('stop {}'.format(i))
+        i = i+1
+        for package in stop["stopPackages"]:
+            print(package["packageId"])
+    
+removeReturnPackageIds("4a36c49c-694d-4001-beb7-4455b13d39fb")
