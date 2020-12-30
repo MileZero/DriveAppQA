@@ -51,4 +51,4 @@ def jobStateCheck(jobIdList):
 
 packageIdList = getPackageIdList(routeId)
 jobIdList = getJobIdList(packageIdList)
-jobStateCheck(jobIdList)
+#jobStateCheck(jobIdList)
