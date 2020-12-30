@@ -66,7 +66,7 @@ def jobStateCheck(jobIdList):
 stops = getStopsList(routeId)
 packageIdList = getPackageIdList(stops)
 jobIdList = getJobIdList(packageIdList)
-jobStateCheck(jobIdList)
+#jobStateCheck(jobIdList)
 
 #def printJobStates():
 
