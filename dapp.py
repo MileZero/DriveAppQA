@@ -22,35 +22,16 @@ def getJobId(packageId):
     packageRecords = jobRequest["packageRecords"]
     for packageRecord in packageRecords:
         print(' {}'.format(packageRecord["packageDetails"]["shipmentBarcode"]))
-        checkJob(packageRecord["planningDetails"]["jobId"])
+        checkJob(packageRecord["orgId"],packageRecord["planningDetails"]["jobId"])
 
-def checkJob(jobId):
+def checkJob(orgId,jobId):
     jobStates=['PICK_UP','SCAN','SIGN','DELIVER']
-    response = requests.get("http://earp."+executionType+".milezero.com/earp-server/api/v2/3e59b207-cea5-4b00-8035-eed1ae26e566/jobs/{}".format(jobId)).json()
+    response = requests.get("http://earp."+executionType+".milezero.com/earp-server/api/v2/{}/jobs/{}".format(orgId,jobId)).json()
     trackingEvents = response["trackingEvents"]
     #print("Events For {} ".format(jobId))
     for jobState in trackingEvents:
         if jobState['jobState'] in jobStates:
             print("  {} -> {} ".format(jobState['jobState'], jobState['completionState']))
-
-def jobStateCheck(jobIdList):
-    jobStates=['PICK_UP','SCAN','SIGN','DELIVER']
-    for jobId in jobIdList:
-        response = requests.get("http://earp."+executionType+".milezero.com/earp-server/api/v2/3e59b207-cea5-4b00-8035-eed1ae26e566/jobs/{}".format(jobId)).json()
-        trackingEvents = response["trackingEvents"]
-        print("Events For {} ".format(jobId))
-        for jobState in trackingEvents:
-            if jobState['jobState'] in jobStates:
-                print(" {} -> {} ".format(jobState['jobState'], jobState['completionState']))
-
-def getJobIdList(packageIdList):
-    for packageId in packageIdList:
-        jobRequest = requests.get("http://switchboard."+executionType+".milezero.com/switchboard-war/api/package?keyType=pi&keyValue={}".format(packageId)).json()
-        packageRecords = jobRequest["packageRecords"]
-        for packageRecord in packageRecords:
-            jobIdList.append(packageRecord["planningDetails"]["jobId"])
-    return jobIdList
-
 
 if(len(sys.argv)!=3):
     print("Usage format: dapp.py stage/prod routeId")
